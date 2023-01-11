@@ -1,95 +1,234 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Nunito&display=swap');
 
-
 /* --- Reset CSS --- */
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
 }
 body {
-	line-height: 1;
+    line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+    list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+    quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 /* --- Reset end --- */
 
 :root {
     --body-color: #e7e5e4;
+    --header-color: #a8a29e;
+    --board-color: #fafaf9;
 }
 
 body {
-    font-family: 'Nunito', sans-serif, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', system-ui;
+    font-family: 'Nunito', sans-serif, 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', system-ui;
     min-height: 100vh;
     min-width: 100vw;
-    font-size: 16px;;
+    font-size: 16px;
     display: grid;
     grid-template-rows: auto 1fr auto;
     background-color: var(--body-color);
 }
 
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0 2rem 0;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+    background-color: var(--header-color);
+}
+
+header > h1 {
+    font-size: 5rem;
+    font-weight: 900;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*border: 1px solid red;*/
+}
+
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 10rem);
+    grid-template-rows: repeat(3, 10rem);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: var(--board-color);
+}
+
+.cell {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem;
+    border: 3px solid black;
+    cursor: pointer;
+}
+
+.cell:nth-child(-n+3) {
+    border-top: 0;
+}
+
+.cell:nth-child(3n+1) {
+    border-left: 0;
+}
+
+.cell:nth-child(n+7) {
+    border-bottom: 0;
+}
+
+.cell:nth-child(3n+3) {
+    border-right: 0;
+}
 
 .footer {
     /* position: absolute;
      bottom: 0;*/
-     width: 100%;
-     height: 2.5rem; 
-     font-size: 18px;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     gap: 10px;
- }
- 
- .reflink {
-     width: 25px;
-     text-align: center;
- }
- 
- .github-img {
-     width: 20px;
-     height: 20px;
- }
- 
- .github-img:hover {
-     width: 25px;
-     height: 25px;
- }
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    height: 2.5rem;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.reflink {
+    width: 25px;
+    text-align: center;
+}
+
+.github-img {
+    width: 20px;
+    height: 20px;
+}
+
+.github-img:hover {
+    width: 25px;
+    height: 25px;
+}
