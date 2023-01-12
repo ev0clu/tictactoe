@@ -13,12 +13,11 @@
         />
     </head>
     <body>
-        <header>
+        <header class="header">
             <h1>Tic-Tac-Toe</h1>
         </header>
-        <main>
-            <button id="btn-start">Start Game</button>
-            <div id="gameboard"></div>
+        <main class="main">
+            <div class="gameboard inactive"></div>
         </main>
         <footer class="footer">
             <p>
@@ -31,6 +30,19 @@
                 <img class="github-img" src="github-logo.png" alt="Github logo" />
             </a>
         </footer>
+        <div class="modal">
+            <div class="modal-content">
+                <div class="title">
+                    <h1>Choose a mark</h1>
+                </div>
+                <ul class="mark-container">
+                    <li class="mark-x">X</li>
+                    <li class="mark-o">O</li>
+                </ul>
+                <div id="warning"></div>
+                <button id="btn-start">Start Game</button>
+            </div>
+        </div>
         <script src="script.js"></script>
     </body>
 </html>
