@@ -1,43 +1,55 @@
 // --------- Document methods --------- //
-let gameBoardContainer = document.querySelector('.gameboard');
+const gameBoardContainer = document.querySelector('.gameboard');
 const startButton = document.getElementById('btn-start');
+const restartButton = document.getElementById('btn-restart');
+const settingsButton = document.getElementById('btn-settings');
 const markX = document.querySelector('.mark-x');
 const markO = document.querySelector('.mark-o');
 const warning = document.getElementById('warning');
 const modal = document.querySelector('.modal');
 
-// --------- Functions declaration  --------- //
-const Player = (mark) => {
-    const storeMark = () => mark;
-    return { storeMark };
+// --------- Factory Functions declaration  --------- //
+const Player = (choosedMark) => {
+    const mark = () => choosedMark;
+    return { mark };
 };
 
 const gameBoard = (() => {
-    const board = ['', '', '', '', '', '', '', '', ''];
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let playerA = '';
+    let playerB = '';
+    let turn = '';
+    let roundMark = '';
 
     const addBoard = (cellIndex, spot) => {
         board[cellIndex] = spot;
-
-        console.log(board);
     };
 
-    const checkCell = () => {};
-
-    const setSpot = () => {
+    const isSpotEvent = () => {
         const gridCells = document.querySelectorAll('.cell');
         gridCells.forEach((cell) => {
             cell.addEventListener('click', (event) => {
                 const cellIndex = cell.dataset.index;
                 if (board[cellIndex] === '') {
                     const spot = event.target;
-                    spot.textContent = 'X';
+                    spot.classList.add('spot');
+                    spot.textContent = roundMark;
                     addBoard(cellIndex, spot.textContent);
+                }
+
+                if (turn === 'playerA') {
+                    turn = 'playerB';
+                    roundMark = playerB.mark();
+                } else {
+                    turn = 'playerA';
+                    roundMark = playerA.mark();
                 }
             });
         });
     };
 
-    const create = () => {
+    const createField = () => {
+        board = ['', '', '', '', '', '', '', '', ''];
         gameBoardContainer.textContent = '';
         let index = 0;
         board.forEach((cell) => {
@@ -48,11 +60,30 @@ const gameBoard = (() => {
             gameBoardContainer.appendChild(gridCell);
             index += 1;
         });
-        setSpot();
+        isSpotEvent();
     };
-    const startGame = () => {};
 
-    return { create };
+    const restartGame = () => {
+        restartButton.addEventListener('click', () => {
+            board = ['', '', '', '', '', '', '', '', ''];
+            createField();
+        });
+    };
+
+    const startGame = (mark) => {
+        playerA = Player(mark);
+        roundMark = playerA.mark();
+        turn = 'playerA';
+        if (mark === 'X') {
+            playerB = Player('O');
+        } else {
+            playerB = Player('X');
+        }
+        createField();
+        restartGame();
+    };
+
+    return { startGame };
 })();
 
 const displayController = (() => {
@@ -67,43 +98,43 @@ const displayController = (() => {
     const showBoard = () => {
         modal.style.display = 'none';
         gameBoardContainer.classList.remove('inactive');
-        gameBoard.create();
+    };
+
+    const showModal = () => {
+        modal.style.display = 'block';
+        gameBoardContainer.classList.add('inactive');
     };
 
     const isWarning = () => {
         if (markX.classList.contains('active')) {
-            ///storeMark(markX.textContent);
             showBoard();
+            gameBoard.startGame(markX.textContent);
         } else if (markO.classList.contains('active')) {
             showBoard();
-            //storeMark(markO.textContent);
+            gameBoard.startGame(markO.textContent);
         } else setWarning();
     };
 
-    return { isWarning, removeWarning };
+    return { isWarning, removeWarning, showModal };
 })();
 
 // --------- Event listeners --------- //
-// Pressed 'Add button' open the Pop up menu
 startButton.addEventListener('click', () => {
     displayController.isWarning();
-
-    //gameBoard.create();
-    //const mark = Player();
-    //const mark = displayController.getMark;
-    //console.log(mark);
 });
 
 markX.addEventListener('click', () => {
     displayController.removeWarning();
     markO.classList.remove('active');
     markX.classList.add('active');
-    //const mark = Player(markX.textContent);
 });
 
 markO.addEventListener('click', () => {
     displayController.removeWarning();
     markX.classList.remove('active');
     markO.classList.add('active');
-    //displayController.storeMark(markO.textContent);
+});
+
+settingsButton.addEventListener('click', () => {
+    displayController.showModal();
 });
