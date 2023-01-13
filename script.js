@@ -1,12 +1,5 @@
 // --------- Document methods --------- //
 const gameBoardContainer = document.querySelector('.gameboard');
-const startButton = document.getElementById('btn-start');
-const restartButton = document.getElementById('btn-restart');
-const settingsButton = document.getElementById('btn-settings');
-const markX = document.querySelector('.mark-x');
-const markO = document.querySelector('.mark-o');
-const warning = document.getElementById('warning');
-const modal = document.querySelector('.modal');
 
 // --------- Factory Functions declaration  --------- //
 const Player = (choosedMark) => {
@@ -14,12 +7,23 @@ const Player = (choosedMark) => {
     return { mark };
 };
 
-const gameBoard = (() => {
+const gameBoardController = (() => {
+    const startButton = document.getElementById('btn-start');
+    const restartButton = document.getElementById('btn-restart');
+
     let board = ['', '', '', '', '', '', '', '', ''];
     let playerA = '';
     let playerB = '';
     let turn = '';
     let roundMark = '';
+
+    startButton.addEventListener('click', () => {
+        displayController.isWarning();
+    });
+
+    const resetBoard = () => {
+        board = ['', '', '', '', '', '', '', '', ''];
+    };
 
     const addBoard = (cellIndex, spot) => {
         board[cellIndex] = spot;
@@ -49,7 +53,7 @@ const gameBoard = (() => {
     };
 
     const createField = () => {
-        board = ['', '', '', '', '', '', '', '', ''];
+        resetBoard();
         gameBoardContainer.textContent = '';
         let index = 0;
         board.forEach((cell) => {
@@ -63,22 +67,28 @@ const gameBoard = (() => {
         isSpotEvent();
     };
 
+    const initRound = () => {
+        roundMark = playerA.mark();
+        turn = 'playerA';
+    };
+
     const restartGame = () => {
         restartButton.addEventListener('click', () => {
-            board = ['', '', '', '', '', '', '', '', ''];
+            resetBoard();
             createField();
+            initRound();
         });
     };
 
     const startGame = (mark) => {
         playerA = Player(mark);
-        roundMark = playerA.mark();
-        turn = 'playerA';
+
         if (mark === 'X') {
             playerB = Player('O');
         } else {
             playerB = Player('X');
         }
+        initRound();
         createField();
         restartGame();
     };
@@ -87,6 +97,12 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
+    const settingsButton = document.getElementById('btn-settings');
+    const markX = document.querySelector('.mark-x');
+    const markO = document.querySelector('.mark-o');
+    const warning = document.getElementById('warning');
+    const modal = document.querySelector('.modal');
+
     const setWarning = () => {
         warning.textContent = 'Please choose a mark!';
     };
@@ -108,33 +124,28 @@ const displayController = (() => {
     const isWarning = () => {
         if (markX.classList.contains('active')) {
             showBoard();
-            gameBoard.startGame(markX.textContent);
+            gameBoardController.startGame(markX.textContent);
         } else if (markO.classList.contains('active')) {
             showBoard();
-            gameBoard.startGame(markO.textContent);
+            gameBoardController.startGame(markO.textContent);
         } else setWarning();
     };
 
-    return { isWarning, removeWarning, showModal };
+    markX.addEventListener('click', () => {
+        removeWarning();
+        markO.classList.remove('active');
+        markX.classList.add('active');
+    });
+
+    markO.addEventListener('click', () => {
+        removeWarning();
+        markX.classList.remove('active');
+        markO.classList.add('active');
+    });
+
+    settingsButton.addEventListener('click', () => {
+        showModal();
+    });
+
+    return { isWarning };
 })();
-
-// --------- Event listeners --------- //
-startButton.addEventListener('click', () => {
-    displayController.isWarning();
-});
-
-markX.addEventListener('click', () => {
-    displayController.removeWarning();
-    markO.classList.remove('active');
-    markX.classList.add('active');
-});
-
-markO.addEventListener('click', () => {
-    displayController.removeWarning();
-    markX.classList.remove('active');
-    markO.classList.add('active');
-});
-
-settingsButton.addEventListener('click', () => {
-    displayController.showModal();
-});
