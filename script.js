@@ -38,7 +38,10 @@ const gameBoardController = (() => {
                 board[row[1]] === board[row[2]] &&
                 board[row[0]] !== ''
             ) {
-                winner = `${board[row[0]]}`;
+                winner = `The winner is ${board[row[0]]}`;
+                displayController.showWinner(winner);
+            } else if (!board.includes('')) {
+                winner = `It's a tie`;
                 displayController.showWinner(winner);
             }
         });
@@ -159,7 +162,7 @@ const displayController = (() => {
         } else setWarning();
     };
 
-    const newGame = () => {
+    const resetBoard = () => {
         gameBoardContainer.classList.remove('winner');
         main.classList.remove('winner');
         header.classList.remove('winner');
@@ -170,14 +173,14 @@ const displayController = (() => {
 
     const showWinner = (winner) => {
         modalWinnerContainer.style.display = 'block';
-        modalWinner.textContent = `The winer is ${winner}`;
+        modalWinner.textContent = winner;
         gameBoardContainer.classList.add('winner');
         main.classList.add('winner');
         header.classList.add('winner');
         footer.classList.add('winner');
 
         playAgainButton.addEventListener('click', () => {
-            newGame();
+            resetBoard();
             isWarning();
         });
     };
@@ -202,5 +205,5 @@ const displayController = (() => {
         showModalStart();
     });
 
-    return { isWarning, showWinner };
+    return { showWinner };
 })();
