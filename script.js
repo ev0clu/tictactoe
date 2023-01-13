@@ -8,25 +8,45 @@ const Player = (choosedMark) => {
 };
 
 const gameBoardController = (() => {
-    const startButton = document.getElementById('btn-start');
     const restartButton = document.getElementById('btn-restart');
-
     let board = ['', '', '', '', '', '', '', '', ''];
     let playerA = '';
     let playerB = '';
     let turn = '';
     let roundMark = '';
-
-    startButton.addEventListener('click', () => {
-        displayController.isWarning();
-    });
+    let winner = '';
 
     const resetBoard = () => {
         board = ['', '', '', '', '', '', '', '', ''];
     };
 
+    const checkWinner = () => {
+        const winPattern = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        winPattern.forEach((row) => {
+            if (
+                board[row[0]] === board[row[1]] &&
+                board[row[1]] === board[row[2]] &&
+                board[row[0]] !== ''
+            ) {
+                winner = `${board[row[0]]}`;
+                displayController.showWinner(winner);
+            }
+        });
+    };
+
     const addBoard = (cellIndex, spot) => {
         board[cellIndex] = spot;
+        checkWinner();
     };
 
     const initRound = () => {
@@ -83,6 +103,7 @@ const gameBoardController = (() => {
         playerA = Player(mark);
         turn = 'playerA';
         roundMark = playerA.mark();
+
         if (mark === 'X') {
             playerB = Player('O');
         } else {
@@ -97,11 +118,18 @@ const gameBoardController = (() => {
 })();
 
 const displayController = (() => {
+    const startButton = document.getElementById('btn-start');
     const settingsButton = document.getElementById('btn-settings');
     const markX = document.querySelector('.mark-x');
     const markO = document.querySelector('.mark-o');
     const warning = document.getElementById('warning');
-    const modal = document.querySelector('.modal');
+    const modalStartContainer = document.querySelector('.modal-start-container');
+    const modalWinnerContainer = document.querySelector('.modal-winner-container');
+    const modalWinner = document.querySelector('.winner-text');
+    const main = document.querySelector('main');
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+    const playAgainButton = document.getElementById('btn-play-again');
 
     const setWarning = () => {
         warning.textContent = 'Please choose a mark!';
@@ -112,12 +140,12 @@ const displayController = (() => {
     };
 
     const showBoard = () => {
-        modal.style.display = 'none';
+        modalStartContainer.style.display = 'none';
         gameBoardContainer.classList.remove('inactive');
     };
 
-    const showModal = () => {
-        modal.style.display = 'block';
+    const showModalStart = () => {
+        modalStartContainer.style.display = 'block';
         gameBoardContainer.classList.add('inactive');
     };
 
@@ -130,6 +158,33 @@ const displayController = (() => {
             gameBoardController.startGame(markO.textContent);
         } else setWarning();
     };
+
+    const newGame = () => {
+        gameBoardContainer.classList.remove('winner');
+        main.classList.remove('winner');
+        header.classList.remove('winner');
+        footer.classList.remove('winner');
+        modalWinnerContainer.style.display = 'none';
+        modalWinner.textContent = '';
+    };
+
+    const showWinner = (winner) => {
+        modalWinnerContainer.style.display = 'block';
+        modalWinner.textContent = `The winer is ${winner}`;
+        gameBoardContainer.classList.add('winner');
+        main.classList.add('winner');
+        header.classList.add('winner');
+        footer.classList.add('winner');
+
+        playAgainButton.addEventListener('click', () => {
+            newGame();
+            isWarning();
+        });
+    };
+
+    startButton.addEventListener('click', () => {
+        isWarning();
+    });
 
     markX.addEventListener('click', () => {
         removeWarning();
@@ -144,8 +199,8 @@ const displayController = (() => {
     });
 
     settingsButton.addEventListener('click', () => {
-        showModal();
+        showModalStart();
     });
 
-    return { isWarning };
+    return { isWarning, showWinner };
 })();

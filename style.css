@@ -194,6 +194,11 @@ main {
     display: none;
 }
 
+.winner {
+    pointer-events: none;
+    filter: blur(0.3rem);
+}
+
 .cell {
     display: grid;
     justify-content: center;
@@ -253,7 +258,7 @@ main {
 
 /* Pop up start menu */
 
-.modal {
+.modal-start-container {
     display: block; /* Show the pop-up by default */
     position: fixed; /* Position the pop-up fixed on the screen */
     top: 50%; /* Position the pop-up vertically centered */
@@ -266,14 +271,14 @@ main {
     border-radius: 8px;
 }
 
-.modal-content {
+.modal-start {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.modal-content h1 {
+.modal-start h1 {
     font-size: 2.5rem;
     font-weight: 900;
     margin-bottom: 2rem;
@@ -314,7 +319,8 @@ main {
 
 #btn-start,
 #btn-restart,
-#btn-settings {
+#btn-settings,
+#btn-play-again {
     border: none;
     display: flex;
     justify-content: center;
@@ -327,16 +333,19 @@ main {
     background-color: var(--button-start-color);
     border-radius: 8px;
 }
+
 #btn-start:hover,
 #btn-restart:hover,
-#btn-settings:hover {
+#btn-settings:hover,
+#btn-play-again:hover {
     cursor: pointer;
     background-color: var(--button-start-color-hover);
 }
 
 #btn-start:active,
 #btn-restart:active,
-#btn-settings:active {
+#btn-settings:active,
+#btn-play-again:active {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
@@ -346,4 +355,28 @@ main {
     align-items: center;
     height: 3rem;
     color: red;
+}
+
+/* Pop up winner window */
+.modal-winner-container {
+    display: none; /* Not show the pop-up by default */
+    position: fixed; /* Position the pop-up fixed on the screen */
+    top: 50%; /* Position the pop-up vertically centered */
+    left: 50%; /* Position the pop-up horizontally centered */
+    transform: translate(-50%, -50%); /* Offset the pop-up to the center of the screen */
+    z-index: 1; /* Make sure the pop-up is on top of other elements */
+    background-color: var(--board-color); /* Set the background color of the pop-up */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow to the pop-up */
+    padding: 20px; /* Add some padding to the pop-up */
+    border-radius: 8px;
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+.modal-winner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
