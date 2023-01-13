@@ -29,6 +29,16 @@ const gameBoardController = (() => {
         board[cellIndex] = spot;
     };
 
+    const initRound = () => {
+        if (turn === 'playerA') {
+            turn = 'playerB';
+            roundMark = playerB.mark();
+        } else {
+            turn = 'playerA';
+            roundMark = playerA.mark();
+        }
+    };
+
     const isSpotEvent = () => {
         const gridCells = document.querySelectorAll('.cell');
         gridCells.forEach((cell) => {
@@ -40,14 +50,7 @@ const gameBoardController = (() => {
                     spot.textContent = roundMark;
                     addBoard(cellIndex, spot.textContent);
                 }
-
-                if (turn === 'playerA') {
-                    turn = 'playerB';
-                    roundMark = playerB.mark();
-                } else {
-                    turn = 'playerA';
-                    roundMark = playerA.mark();
-                }
+                initRound();
             });
         });
     };
@@ -67,28 +70,25 @@ const gameBoardController = (() => {
         isSpotEvent();
     };
 
-    const initRound = () => {
-        roundMark = playerA.mark();
-        turn = 'playerA';
-    };
-
     const restartGame = () => {
         restartButton.addEventListener('click', () => {
             resetBoard();
             createField();
-            initRound();
+            turn = 'playerA';
+            roundMark = playerA.mark();
         });
     };
 
     const startGame = (mark) => {
         playerA = Player(mark);
-
+        turn = 'playerA';
+        roundMark = playerA.mark();
         if (mark === 'X') {
             playerB = Player('O');
         } else {
             playerB = Player('X');
         }
-        initRound();
+
         createField();
         restartGame();
     };
