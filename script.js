@@ -9,12 +9,18 @@ const Player = (choosedMark) => {
 
 const gameBoardController = (() => {
     const restartButton = document.getElementById('btn-restart');
+    const select = document.querySelector('select');
     let board = ['', '', '', '', '', '', '', '', ''];
     let playerA = '';
     let playerB = '';
     let turn = '';
     let roundMark = '';
     let winner = '';
+
+    const getEnemy = () => {
+        const enemy = select.value;
+        return enemy;
+    };
 
     const resetBoard = () => {
         board = ['', '', '', '', '', '', '', '', ''];
@@ -78,18 +84,49 @@ const gameBoardController = (() => {
         }
     };
 
+    const playerSpot = (index, eventTarget) => {
+        const cellIndex = index;
+        if (board[cellIndex] === '') {
+            const spot = eventTarget;
+            spot.classList.add('spot');
+            spot.textContent = roundMark;
+            addBoard(cellIndex, spot.textContent);
+        }
+    };
+
+    const computerSpot = (gridCells) => {
+        let index = 0;
+        const availableIndex = [];
+        let cellIndex = 0;
+
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === '') {
+                availableIndex[index] = i;
+                index += 1;
+            }
+        }
+        cellIndex = availableIndex[Math.floor(Math.random() * availableIndex.length)];
+        gridCells.forEach((cell) => {
+            const spot = cell;
+            if (Number(cell.dataset.index) === cellIndex) {
+                spot.classList.add('spot');
+                spot.textContent = roundMark;
+                addBoard(cellIndex, spot.textContent);
+            }
+        });
+    };
+
     const isSpotEvent = () => {
         const gridCells = document.querySelectorAll('.cell');
         gridCells.forEach((cell) => {
             cell.addEventListener('click', (event) => {
-                const cellIndex = cell.dataset.index;
-                if (board[cellIndex] === '') {
-                    const spot = event.target;
-                    spot.classList.add('spot');
-                    spot.textContent = roundMark;
-                    addBoard(cellIndex, spot.textContent);
-                }
+                playerSpot(cell.dataset.index, event.target);
                 initRound();
+                const enemy = getEnemy();
+                if (enemy === 'computer') {
+                    computerSpot(gridCells);
+                    initRound();
+                }
             });
         });
     };
