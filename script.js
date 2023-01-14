@@ -18,6 +18,7 @@ const gameBoardController = (() => {
 
     const resetBoard = () => {
         board = ['', '', '', '', '', '', '', '', ''];
+        winner = '';
     };
 
     const checkWinner = () => {
@@ -32,19 +33,34 @@ const gameBoardController = (() => {
             [2, 4, 6]
         ];
 
-        winPattern.forEach((row) => {
-            if (
-                board[row[0]] === board[row[1]] &&
-                board[row[1]] === board[row[2]] &&
-                board[row[0]] !== ''
-            ) {
-                winner = `The winner is ${board[row[0]]}`;
-                displayController.showWinner(winner);
-            } else if (!board.includes('')) {
+        if (!board.includes('')) {
+            for (let row = 0; row < winPattern.length; row++) {
+                if (
+                    board[winPattern[row][0]] === board[winPattern[row][1]] &&
+                    board[winPattern[row][0]] === board[winPattern[row][2]]
+                ) {
+                    winner = `The winner is ${board[winPattern[row][0]]}`;
+                    displayController.showWinner(winner);
+                    break;
+                }
+            }
+            if (winner === '') {
                 winner = `It's a tie`;
                 displayController.showWinner(winner);
             }
-        });
+        } else {
+            for (let row = 0; row < winPattern.length; row++) {
+                if (
+                    board[winPattern[row][0]] === board[winPattern[row][1]] &&
+                    board[winPattern[row][0]] === board[winPattern[row][2]] &&
+                    board[winPattern[row][0]] !== ''
+                ) {
+                    winner = `The winner is ${board[winPattern[row][0]]}`;
+                    displayController.showWinner(winner);
+                    break;
+                }
+            }
+        }
     };
 
     const addBoard = (cellIndex, spot) => {

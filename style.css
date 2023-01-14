@@ -313,6 +313,11 @@ main {
     box-shadow: inset 0 -0.3rem var(--spot-choose-border-color);
 }
 
+select {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
 #btn-restart {
     margin-top: 2rem;
 }
