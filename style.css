@@ -407,4 +407,7 @@ select {
         text-align: center;
         font-size: 2rem;
     }
+    .cell {
+        font-size: 5rem;
+    }
 }
