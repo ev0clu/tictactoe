@@ -385,3 +385,26 @@ select {
     align-items: center;
     gap: 1rem;
 }
+
+/* MEDIA QUERIES */
+@media (max-width: 640px) {
+    header > h1 {
+        font-size: 3rem;
+    }
+    .gameboard {
+        grid-template-columns: repeat(3, 6.5rem);
+        grid-template-rows: repeat(3, 6.5rem);
+    }
+    .modal-start h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    .mark-container li {
+        width: 3em;
+    }
+
+    .modal-winner-container {
+        text-align: center;
+        font-size: 2rem;
+    }
+}
