@@ -86,12 +86,11 @@ const gameBoardController = (() => {
 
     const playerSpot = (index, eventTarget) => {
         const cellIndex = index;
-        if (board[cellIndex] === '') {
-            const spot = eventTarget;
-            spot.classList.add('spot');
-            spot.textContent = roundMark;
-            addBoard(cellIndex, spot.textContent);
-        }
+
+        const spot = eventTarget;
+        spot.classList.add('spot');
+        spot.textContent = roundMark;
+        addBoard(cellIndex, spot.textContent);
     };
 
     const computerSpot = (gridCells) => {
@@ -120,12 +119,14 @@ const gameBoardController = (() => {
         const gridCells = document.querySelectorAll('.cell');
         gridCells.forEach((cell) => {
             cell.addEventListener('click', (event) => {
-                playerSpot(cell.dataset.index, event.target);
-                initRound();
-                const enemy = getEnemy();
-                if (enemy === 'computer') {
-                    computerSpot(gridCells);
+                if (board[cell.dataset.index] === '') {
+                    playerSpot(cell.dataset.index, event.target);
                     initRound();
+                    const enemy = getEnemy();
+                    if (enemy === 'computer') {
+                        computerSpot(gridCells);
+                        initRound();
+                    }
                 }
             });
         });
